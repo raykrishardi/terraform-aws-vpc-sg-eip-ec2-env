@@ -1,3 +1,6 @@
+# AWS Key Pair
+*.pem
+
 # MacOS
 .DS_Store
 

@@ -81,3 +81,14 @@ module "ec2_cluster" {
     Environment = var.env
   }
 }
+
+# EIP
+# Reference:
+# 1. https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip
+resource "aws_eip" "eip_ec2" {
+  depends_on = [
+    module.ec2_cluster
+  ]
+  instance = module.ec2_cluster.id[0]
+  vpc      = true
+}
