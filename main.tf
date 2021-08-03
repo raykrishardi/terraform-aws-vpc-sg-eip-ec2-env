@@ -28,6 +28,22 @@ module "vpc" {
   }
 }
 
+# HTTP and SSH Security Group
+# Reference:
+# 1. https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/latest
+module "web_server_sg" {
+  depends_on = [
+    module.vpc
+  ]
+  source = "terraform-aws-modules/security-group/aws//modules/http-80"
+
+  name        = "${var.vpc_name}_sg_http"
+  description = "Allow HTTP"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+}
+
 # Key pair
 # Reference:
 # 1. https://registry.terraform.io/modules/terraform-aws-modules/key-pair/aws/latest
@@ -63,7 +79,8 @@ module "ec2_cluster" {
 
   depends_on = [
     module.vpc,
-    module.key_pair
+    module.key_pair,
+    module.web_server_sg
   ]
 
   name           = var.instance_cluster_name
@@ -72,7 +89,7 @@ module "ec2_cluster" {
   ami                    = var.instance_ami
   instance_type          = var.instance_type
   key_name               = module.key_pair.key_pair_key_name
-  vpc_security_group_ids = ["${module.vpc.default_security_group_id}"]
+  vpc_security_group_ids = ["${module.vpc.default_security_group_id}", "${module.web_server_sg.security_group_id}"]
   subnet_id              = module.vpc.public_subnets[0]
   user_data              = var.instance_user_data
 
