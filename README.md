@@ -6,9 +6,8 @@ Terraform script to create VPC, Security Group, Elastic IP, and EC2 in various e
   - `region` -> `ap-southeast-1` (Singapore)
 
 ## TODO:
-1. Create and associate EIP to the EC2 instance
-2. Create custom HTTP and SSH security group for the EC2 instance
-3. Create `prod.tfvars` file under `environments/` dir
+1. Create `prod.tfvars` file under `environments/` dir
+2. Separate `dev` and `prod` env using `terraform workspace` 
 
 ## Getting Started
 
