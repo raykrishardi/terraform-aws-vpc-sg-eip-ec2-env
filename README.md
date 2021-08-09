@@ -29,3 +29,17 @@ terraform apply -var-file environments/dev.tfvars
 terraform workspace new prod
 terraform apply -var-file environments/prod.tfvars
 ```
+
+## Clean Up
+
+### Destroy `dev` workspace/environment resources
+```
+terraform workspace select dev
+terraform destroy -var-file environments/dev.tfvars
+```
+
+### Destroy `prod` workspace/environment resources
+```
+terraform workspace select prod
+terraform destroy -var-file environments/prod.tfvars
+```
